@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F40XX</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CMSIS;..\Library\inc;..\User;..\User\hardware\rc;..\User\APP;..\User\hardware\delay;..\User\hardware\timer</IncludePath>
+              <IncludePath>..\CMSIS;..\Library\inc;..\User;..\User\hardware\rc;..\User\APP;..\User\hardware\delay;..\User\hardware\timer;..\User\hardware\can1</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -648,6 +648,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\hardware\timer\timer.c</FilePath>
             </File>
+            <File>
+              <FileName>can1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\hardware\can1\can1.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -657,6 +662,11 @@
               <FileName>sbus.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\APP\sbus.c</FilePath>
+            </File>
+            <File>
+              <FileName>robomodule.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\APP\robomodule.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -26,7 +26,7 @@ typedef __packed struct
 {
         __packed struct
         {
-                int16_t ch[6];
+                int16_t ch[6];  // -784~783
         } rc;
         __packed struct
         {

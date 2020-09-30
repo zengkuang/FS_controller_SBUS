@@ -16,7 +16,6 @@
 
 
 const RC_ctrl_t *FS_controller;
-
 /** @addtogroup Template_Project
   * @{
   */ 
@@ -34,26 +33,36 @@ void TASKS_Init()
 
 	Remote_Config();
 
-	TIM3_Init(1000, 90);
 
-	TIM6_Init(1000, 90);
 	
 	FS_controller = get_remote_control_point();
-	//DevicePower_Config();
-
-//	CAN1_Config(CAN_SJW_1tq, CAN_BS2_2tq, CAN_BS1_6tq, 5, CAN_Mode_Normal);
-//	//CAN2_Config(CAN_SJW_1tq, CAN_BS2_2tq, CAN_BS1_6tq, 5, CAN_Mode_Normal);
-
+	
+	CAN1_Configuration();
+  delay_ms(500);                                      //delay
+	
+  CAN_RoboModule_DRV_Reset(0,0);                      //reset all   
+  delay_ms(500);                                      //delay
+	
+  CAN_RoboModule_DRV_Config(0,1,10,0);               //configuration one feedback per 10ms    100hz
+  delay_us(200);                                   //dealy
+	
+  CAN_RoboModule_DRV_Config(0,2,10,0);               //configuration one feedback per 10ms  100hz
+  delay_us(200);                                      //delay
+	
+	CAN_RoboModule_DRV_Mode_Choice(0,0,Velocity_Mode);  //Select mode: open loop
+  delay_ms(500);                                      //delay
+	
+	
+//
+	
 //	Switch_Init();
-
-//	TIM3_Init(1000, 90);
-
-//	TIM6_Init(1000, 90);
 
 //	PWM_TIM4_Config();
 
 //	USART6_Init();
-
+	
+	TIM3_Init(999, 83);   // 84M /(1000* 84) = 1000   // 999 83
+	TIM6_Init(999, 83);
 
 }
 
@@ -65,7 +74,10 @@ void TASKS_Timer_H_1000hz()
 
 void TASKS_Timer_H_100hz()
 {
-
+	robomodule[0].config.set_vel = map(FS_controller->rc.ch[1],-784,783,-6000,6000);
+	robomodule[1].config.set_vel = map(FS_controller->rc.ch[2],-784,783,-6000,6000);
+	CAN_RoboModule_DRV_Velocity_Mode(0,1,pwm_limit,robomodule[0].config.set_vel);
+	CAN_RoboModule_DRV_Velocity_Mode(0,2,pwm_limit,robomodule[1].config.set_vel);
 }
 
 void TASKS_Timer_H_50hz()

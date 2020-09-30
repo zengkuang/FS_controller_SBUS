@@ -42,3 +42,6 @@
 ..\output\rc.o: ..\User\hardware\delay\delay.h
 ..\output\rc.o: ..\User\task.h
 ..\output\rc.o: ..\User\hardware\timer\timer.h
+..\output\rc.o: ..\User\hardware\can1\can1.h
+..\output\rc.o: D:\keil\ARM\ARMCC\Bin\..\include\stdlib.h
+..\output\rc.o: ..\User\APP\robomodule.h

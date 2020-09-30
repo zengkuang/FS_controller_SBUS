@@ -42,3 +42,6 @@
 ..\output\stm32f4xx_it.o: ..\User\hardware\delay\delay.h
 ..\output\stm32f4xx_it.o: ..\User\task.h
 ..\output\stm32f4xx_it.o: ..\User\hardware\timer\timer.h
+..\output\stm32f4xx_it.o: ..\User\hardware\can1\can1.h
+..\output\stm32f4xx_it.o: D:\keil\ARM\ARMCC\Bin\..\include\stdlib.h
+..\output\stm32f4xx_it.o: ..\User\APP\robomodule.h

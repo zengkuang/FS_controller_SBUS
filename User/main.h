@@ -36,6 +36,9 @@
 #include "delay.h"
 #include "task.h"
 #include "timer.h"
+#include "can1.h"
+#include "stdlib.h"
+#include "robomodule.h"
 
 
 

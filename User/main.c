@@ -63,8 +63,8 @@ int main(void)
 
 /**
   * @brief  Inserts a delay time.
-  * @param  nTime: specifies the delay time length, in milliseconds.
-  * @retval None
+  * @param  nTime: specifies the delay time length, in  * @retval None
+ milliseconds.
   */
 
 
