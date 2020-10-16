@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F40XX</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CMSIS;..\Library\inc;..\User;..\User\hardware\rc;..\User\APP;..\User\hardware\delay;..\User\hardware\timer;..\User\hardware\can1</IncludePath>
+              <IncludePath>..\CMSIS;..\Library\inc;..\User;..\User\hardware\rc;..\User\APP;..\User\hardware\delay;..\User\hardware\timer;..\User\hardware\can1;..\User\hardware\adc;..\User\hardware\JY901</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -652,6 +652,16 @@
               <FileName>can1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\hardware\can1\can1.c</FilePath>
+            </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\hardware\adc\adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>JY901.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\hardware\JY901\JY901.c</FilePath>
             </File>
           </Files>
         </Group>

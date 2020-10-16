@@ -3,7 +3,6 @@
 #include "main.h"
 #include "rc.h"
 
-
 #define SBUS_RX_BUF_NUM 36u
 #define RC_FRAME_LENGTH 25u
 

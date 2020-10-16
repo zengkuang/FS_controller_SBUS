@@ -50,6 +50,8 @@
 "..\output\delay.o"
 "..\output\timer.o"
 "..\output\can1.o"
+"..\output\adc.o"
+"..\output\jy901.o"
 "..\output\sbus.o"
 "..\output\robomodule.o"
 --strict --scatter "..\Output\jc.sct"

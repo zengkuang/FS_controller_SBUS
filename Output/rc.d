@@ -45,3 +45,7 @@
 ..\output\rc.o: ..\User\hardware\can1\can1.h
 ..\output\rc.o: D:\keil\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\output\rc.o: ..\User\APP\robomodule.h
+..\output\rc.o: ..\User\hardware\adc\adc.h
+..\output\rc.o: ..\User\hardware\JY901\JY901.h
+..\output\rc.o: D:\keil\ARM\ARMCC\Bin\..\include\string.h
+..\output\rc.o: D:\keil\ARM\ARMCC\Bin\..\include\stdio.h

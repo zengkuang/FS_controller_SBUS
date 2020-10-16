@@ -39,7 +39,10 @@
 #include "can1.h"
 #include "stdlib.h"
 #include "robomodule.h"
-
+#include "adc.h"
+#include "JY901.h"
+#include "string.h"
+#include "stdio.h"
 
 
 typedef signed char int8_t;

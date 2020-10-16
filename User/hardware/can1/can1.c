@@ -615,8 +615,7 @@ void CAN_RoboModule_DRV_Current_Velocity_Mode(unsigned char Group,unsigned char 
     tx_message.Data[7] = 0x55;
     
     can_tx_success_flag = 0;
-    CAN_Transmit(CAN1,&tx_message);
-    
+    CAN_Transmit(CAN1,&tx_message);                                                                      
     CAN_Time_Out = 0;
     while(can_tx_success_flag == 0)
     {
@@ -892,12 +891,18 @@ void CAN1_RX0_IRQHandler(void)
                 Real_Current_Value[0] = (rx_message.Data[0]<<8)|(rx_message.Data[1]);
                 Real_Velocity_Value[0] = (rx_message.Data[2]<<8)|(rx_message.Data[3]);
                 Real_Position_Value[0] = ((rx_message.Data[4]<<24)|(rx_message.Data[5]<<16)|(rx_message.Data[6]<<8)|(rx_message.Data[7]));
+								robomodule[0].info.cur = Real_Current_Value[0];
+								robomodule[0].info.vel = Real_Velocity_Value[0];
+								robomodule[0].info.pos = Real_Position_Value[0];
             }
             else if(rx_message.StdId == 0x2B)
             {
                 Real_Current_Value[1] = (rx_message.Data[0]<<8)|(rx_message.Data[1]);
                 Real_Velocity_Value[1] = (rx_message.Data[2]<<8)|(rx_message.Data[3]);
                 Real_Position_Value[1] = ((rx_message.Data[4]<<24)|(rx_message.Data[5]<<16)|(rx_message.Data[6]<<8)|(rx_message.Data[7]));
+								robomodule[1].info.cur = Real_Current_Value[1];
+								robomodule[1].info.vel = Real_Velocity_Value[1];
+								robomodule[1].info.pos = Real_Position_Value[1];
             }
             else if(rx_message.StdId == 0x3B)
             {
@@ -914,10 +919,12 @@ void CAN1_RX0_IRQHandler(void)
             else if(rx_message.StdId == 0x1F)
             {
                 Real_Online[0] = 1;
+								robomodule[0].info.online = 1;
             }
             else if(rx_message.StdId == 0x2F)
             {
                 Real_Online[1] = 1;
+								robomodule[1].info.online = 1;
             }
             else if(rx_message.StdId == 0x3F)
             {
@@ -931,11 +938,15 @@ void CAN1_RX0_IRQHandler(void)
             {
                 Real_Ctl1_Value[0] = rx_message.Data[0];
                 Real_Ctl2_Value[0] = rx_message.Data[1];
+								robomodule[0].info.ctl1 = Real_Ctl1_Value[0];
+								robomodule[0].info.ctl2 = Real_Ctl2_Value[0];
             }
             else if(rx_message.StdId == 0x2C)
             {
                 Real_Ctl1_Value[1] = rx_message.Data[0];
                 Real_Ctl2_Value[1] = rx_message.Data[1];
+								robomodule[1].info.ctl1 = Real_Ctl1_Value[1];
+								robomodule[1].info.ctl2 = Real_Ctl2_Value[1];
             }
             else if(rx_message.StdId == 0x3C)
             {
