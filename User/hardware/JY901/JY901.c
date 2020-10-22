@@ -20,8 +20,8 @@ void JY901_usart2_Init(uint16_t baudrate){
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2,ENABLE);      //Ê¹ÄÜUSART2Ê±ÖÓ APB1
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,ENABLE);
 	
-	GPIO_PinAFConfig(GPIOA,GPIO_PinSource2,GPIO_AF_USART1);
-	GPIO_PinAFConfig(GPIOA,GPIO_PinSource3,GPIO_AF_USART1);
+	GPIO_PinAFConfig(GPIOA,GPIO_PinSource2,GPIO_AF_USART2);
+	GPIO_PinAFConfig(GPIOA,GPIO_PinSource3,GPIO_AF_USART2);
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;

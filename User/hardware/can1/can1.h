@@ -27,6 +27,12 @@ void CAN_RoboModule_DRV_Current_Velocity_Position_Mode(unsigned char Group,unsig
 
 void CAN_RoboModule_DRV_Config(unsigned char Group,unsigned char Number,unsigned char Temp_Time,unsigned char Ctl1_Ctl2);
 void CAN_RoboModule_DRV_Online_Check(unsigned char Group,unsigned char Number);
+uint8_t LS_Driver1_Set_Velocity(short Temp_Velocity);
+uint8_t LS_Driver2_Set_Velocity(short Temp_Velocity);
+uint8_t LS_Driver1_Enable(void);
+uint8_t LS_Driver1_Disable(void);
+uint8_t LS_Driver2_Enable(void);
+uint8_t LS_Driver2_Disable(void);
 
 extern short Real_Current_Value[4];
 extern short Real_Velocity_Value[4];

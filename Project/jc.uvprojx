@@ -649,14 +649,14 @@
               <FilePath>..\User\hardware\timer\timer.c</FilePath>
             </File>
             <File>
-              <FileName>can1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\hardware\can1\can1.c</FilePath>
-            </File>
-            <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\hardware\adc\adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>can1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\hardware\can1\can1.c</FilePath>
             </File>
             <File>
               <FileName>JY901.c</FileName>

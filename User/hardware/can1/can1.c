@@ -863,6 +863,205 @@ void CAN_RoboModule_DRV_Online_Check(unsigned char Group,unsigned char Number)
     }
 }
 
+
+
+
+uint8_t LS_Driver1_Set_Velocity(short Temp_Velocity)
+{
+  uint8_t mail;
+  uint16_t i=0;
+	
+  CanTxMsg TxMessage;    //CAN发送定义
+	
+  TxMessage.StdId = 0x0101;	         // 标准标识符ID（11位:D0-D10;D0-D7:0(广播模式)1-255（接收报告者的栈号））
+	                                   //D0-D7 >0：广播模式；1-255：接收报告者的栈号）；
+	                                   //D8 >0:广播/报告模式；1：点到点模式;
+	                                   //D9-D10 >:优先权；
+  TxMessage.ExtId = 0x0101;	         // 扩展标示符ID（29位）
+  TxMessage.IDE = CAN_Id_Standard; // 使用标准贞
+  TxMessage.RTR = CAN_RTR_Data;		 // 消息类型为数据帧；/遥控帧
+  TxMessage.DLC = 6;		         // 报文长度	
+	
+	TxMessage.Data[0] = 0x00;
+  TxMessage.Data[1] = 0x28;
+  TxMessage.Data[2] = 0x00;
+  TxMessage.Data[3] = 0x00;
+	
+  TxMessage.Data[4] = (unsigned char)((Temp_Velocity>>8)&0xff);
+  TxMessage.Data[5] = (unsigned char)(Temp_Velocity&0xff);	
+        
+  
+	mail = CAN_Transmit(CAN1, &TxMessage);   
+  i=0;
+  while((CAN_TransmitStatus(CAN1, mail)==CAN_TxStatus_Failed)&&(i<0XFFF))i++;	//等待发送结束
+  if(i>=0XFFF)return 1;
+  return 0;			
+	
+	
+}
+
+
+
+uint8_t LS_Driver2_Set_Velocity(short Temp_Velocity)
+{
+  uint8_t mail;
+  uint16_t i=0;
+	
+  CanTxMsg TxMessage;    //CAN发送定义
+	
+  TxMessage.StdId = 0x0102;	         // 标准标识符ID（11位:D0-D10;D0-D7:0(广播模式)1-255（接收报告者的栈号））
+	                                   //D0-D7 >0：广播模式；1-255：接收报告者的栈号）；
+	                                   //D8 >0:广播/报告模式；1：点到点模式;
+	                                   //D9-D10 >:优先权；
+  TxMessage.ExtId = 0x0102;	         // 扩展标示符ID（29位）
+  TxMessage.IDE = CAN_Id_Standard; // 使用标准贞
+  TxMessage.RTR = CAN_RTR_Data;		 // 消息类型为数据帧；/遥控帧
+  TxMessage.DLC = 6;		         // 报文长度	
+	
+	TxMessage.Data[0] = 0x00;
+  TxMessage.Data[1] = 0x28;
+  TxMessage.Data[2] = 0x00;
+  TxMessage.Data[3] = 0x00;
+	
+  TxMessage.Data[4] = (unsigned char)((Temp_Velocity>>8)&0xff);
+  TxMessage.Data[5] = (unsigned char)(Temp_Velocity&0xff);	
+        
+  
+	mail = CAN_Transmit(CAN1, &TxMessage);   
+  i=0;
+  while((CAN_TransmitStatus(CAN1, mail)==CAN_TxStatus_Failed)&&(i<0XFFF))i++;	//等待发送结束
+  if(i>=0XFFF)return 1;
+  return 0;			
+	
+	
+}
+
+
+
+
+
+
+uint8_t LS_Driver1_Enable(void)
+{
+  uint8_t mail;
+  uint16_t i=0;
+	
+  CanTxMsg TxMessage;    //CAN发送定义
+	
+  TxMessage.StdId = 0x0101;	         // 标准标识符ID（11位:D0-D10;D0-D7:0(广播模式)1-255（接收报告者的栈号））
+	                                   //D0-D7 >0：广播模式；1-255：接收报告者的栈号）；
+	                                   //D8 >0:广播/报告模式；1：点到点模式;
+	                                   //D9-D10 >:优先权；
+  TxMessage.ExtId = 0x0101;	         // 扩展标示符ID（29位）
+  TxMessage.IDE = CAN_Id_Standard; // 使用标准贞
+  TxMessage.RTR = CAN_RTR_Data;		 // 消息类型为数据帧；/遥控帧
+  TxMessage.DLC = 6;		         // 报文长度	
+	
+	TxMessage.Data[0] = 0x00;
+  TxMessage.Data[1] = 0x24;
+  TxMessage.Data[2] = 0x00;
+  TxMessage.Data[3] = 0x10;
+  TxMessage.Data[4] = 0x00;
+  TxMessage.Data[5] = 0x01;         
+  
+	mail = CAN_Transmit(CAN1, &TxMessage);   
+  i=0;
+  while((CAN_TransmitStatus(CAN1, mail)==CAN_TxStatus_Failed)&&(i<0XFFF))i++;	//等待发送结束
+  if(i>=0XFFF)return 1;
+  return 0;		
+}
+
+uint8_t LS_Driver1_Disable(void)
+{
+  uint8_t mail;
+  uint16_t i=0;
+	
+  CanTxMsg TxMessage;    //CAN发送定义
+	
+  TxMessage.StdId = 0x0101;	         // 标准标识符ID（11位:D0-D10;D0-D7:0(广播模式)1-255（接收报告者的栈号））
+	                                   //D0-D7 >0：广播模式；1-255：接收报告者的栈号）；
+	                                   //D8 >0:广播/报告模式；1：点到点模式;
+	                                   //D9-D10 >:优先权；
+  TxMessage.ExtId = 0x0101;	         // 扩展标示符ID（29位）
+  TxMessage.IDE = CAN_Id_Standard; // 使用标准贞
+  TxMessage.RTR = CAN_RTR_Data;		 // 消息类型为数据帧；/遥控帧
+  TxMessage.DLC = 6;		         // 报文长度	
+	
+	TxMessage.Data[0] = 0x00;
+  TxMessage.Data[1] = 0x24;
+  TxMessage.Data[2] = 0x00;
+  TxMessage.Data[3] = 0x10;
+  TxMessage.Data[4] = 0x00;
+  TxMessage.Data[5] = 0x00;         
+  
+	mail = CAN_Transmit(CAN1, &TxMessage);   
+  i=0;
+  while((CAN_TransmitStatus(CAN1, mail)==CAN_TxStatus_Failed)&&(i<0XFFF))i++;	//等待发送结束
+  if(i>=0XFFF)return 1;
+  return 0;		
+}
+
+uint8_t LS_Driver2_Enable(void)
+{
+  uint8_t mail;
+  uint16_t i=0;
+	
+  CanTxMsg TxMessage;    //CAN发送定义
+	
+  TxMessage.StdId = 0x0102;	         // 标准标识符ID（11位:D0-D10;D0-D7:0(广播模式)1-255（接收报告者的栈号））
+	                                   //D0-D7 >0：广播模式；1-255：接收报告者的栈号）；
+	                                   //D8 >0:广播/报告模式；1：点到点模式;
+	                                   //D9-D10 >:优先权；
+  TxMessage.ExtId = 0x0102;	         // 扩展标示符ID（29位）
+  TxMessage.IDE = CAN_Id_Standard; // 使用标准贞
+  TxMessage.RTR = CAN_RTR_Data;		 // 消息类型为数据帧；/遥控帧
+  TxMessage.DLC = 6;		         // 报文长度	
+	
+	TxMessage.Data[0] = 0x00;
+  TxMessage.Data[1] = 0x24;
+  TxMessage.Data[2] = 0x00;
+  TxMessage.Data[3] = 0x10;
+  TxMessage.Data[4] = 0x00;
+  TxMessage.Data[5] = 0x01;         
+  
+	mail = CAN_Transmit(CAN1, &TxMessage);   
+  i=0;
+  while((CAN_TransmitStatus(CAN1, mail)==CAN_TxStatus_Failed)&&(i<0XFFF))i++;	//等待发送结束
+  if(i>=0XFFF)return 1;
+  return 0;		
+}
+
+uint8_t LS_Driver2_Disable(void)
+{
+  uint8_t mail;
+  uint16_t i=0;
+	
+  CanTxMsg TxMessage;    //CAN发送定义
+	
+  TxMessage.StdId = 0x0102;	         // 标准标识符ID（11位:D0-D10;D0-D7:0(广播模式)1-255（接收报告者的栈号））
+	                                   //D0-D7 >0：广播模式；1-255：接收报告者的栈号）；
+	                                   //D8 >0:广播/报告模式；1：点到点模式;
+	                                   //D9-D10 >:优先权；
+  TxMessage.ExtId = 0x0102;	         // 扩展标示符ID（29位）
+  TxMessage.IDE = CAN_Id_Standard; // 使用标准贞
+  TxMessage.RTR = CAN_RTR_Data;		 // 消息类型为数据帧；/遥控帧
+  TxMessage.DLC = 6;		         // 报文长度	
+	
+	TxMessage.Data[0] = 0x00;
+  TxMessage.Data[1] = 0x24;
+  TxMessage.Data[2] = 0x00;
+  TxMessage.Data[3] = 0x10;
+  TxMessage.Data[4] = 0x00;
+  TxMessage.Data[5] = 0x00;         
+  
+	mail = CAN_Transmit(CAN1, &TxMessage);   
+  i=0;
+  while((CAN_TransmitStatus(CAN1, mail)==CAN_TxStatus_Failed)&&(i<0XFFF))i++;	//等待发送结束
+  if(i>=0XFFF)return 1;
+  return 0;		
+}
+
+
 short Real_Current_Value[4] = {0};
 short Real_Velocity_Value[4] = {0};
 long Real_Position_Value[4] = {0};
