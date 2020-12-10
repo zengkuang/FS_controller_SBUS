@@ -866,7 +866,7 @@ void CAN_RoboModule_DRV_Online_Check(unsigned char Group,unsigned char Number)
 
 
 
-uint8_t LS_Driver1_Set_Velocity(short Temp_Velocity)
+uint8_t LS_Driver1_Set_Rpm(short Temp_Rpm)
 {
   uint8_t mail;
   uint16_t i=0;
@@ -887,8 +887,8 @@ uint8_t LS_Driver1_Set_Velocity(short Temp_Velocity)
   TxMessage.Data[2] = 0x00;
   TxMessage.Data[3] = 0x00;
 	
-  TxMessage.Data[4] = (unsigned char)((Temp_Velocity>>8)&0xff);
-  TxMessage.Data[5] = (unsigned char)(Temp_Velocity&0xff);	
+  TxMessage.Data[4] = (unsigned char)((Temp_Rpm>>8)&0xff);
+  TxMessage.Data[5] = (unsigned char)(Temp_Rpm&0xff);	
         
   
 	mail = CAN_Transmit(CAN1, &TxMessage);   
@@ -902,7 +902,7 @@ uint8_t LS_Driver1_Set_Velocity(short Temp_Velocity)
 
 
 
-uint8_t LS_Driver2_Set_Velocity(short Temp_Velocity)
+uint8_t LS_Driver2_Set_Rpm(short Temp_Rpm)
 {
   uint8_t mail;
   uint16_t i=0;
@@ -923,8 +923,8 @@ uint8_t LS_Driver2_Set_Velocity(short Temp_Velocity)
   TxMessage.Data[2] = 0x00;
   TxMessage.Data[3] = 0x00;
 	
-  TxMessage.Data[4] = (unsigned char)((Temp_Velocity>>8)&0xff);
-  TxMessage.Data[5] = (unsigned char)(Temp_Velocity&0xff);	
+  TxMessage.Data[4] = (unsigned char)((Temp_Rpm>>8)&0xff);
+  TxMessage.Data[5] = (unsigned char)(Temp_Rpm&0xff);	
         
   
 	mail = CAN_Transmit(CAN1, &TxMessage);   
@@ -1065,15 +1065,13 @@ uint8_t LS_Driver2_Disable(void)
 short Real_Current_Value[4] = {0};
 short Real_Velocity_Value[4] = {0};
 long Real_Position_Value[4] = {0};
+long position_value[2] = {0};
 char Real_Online[4] = {0};
 char Real_Ctl1_Value[4] = {0};
 char Real_Ctl2_Value[4] = {0};
 
-//本接收数据的函数，默认为4个驱动器，都挂在0组，编号为1、2、3、4
-/*************************************************************************
-                          CAN1_RX0_IRQHandler
-描述：CAN1的接收中断函数
-*************************************************************************/
+
+
 void CAN1_RX0_IRQHandler(void)
 {
     CanRxMsg rx_message;
@@ -1083,82 +1081,117 @@ void CAN1_RX0_IRQHandler(void)
         CAN_ClearITPendingBit(CAN1, CAN_IT_FMP0);
         CAN_Receive(CAN1, CAN_FIFO0, &rx_message);
         
-        if((rx_message.IDE == CAN_Id_Standard)&&(rx_message.IDE == CAN_RTR_Data)&&(rx_message.DLC == 8)) //标准帧、数据帧、数据长度为8
+        if((rx_message.IDE == CAN_Id_Standard)&&(rx_message.RTR == CAN_RTR_Data)&&(rx_message.DLC == 8)) //标准帧、数据帧、数据长度为8
         {
-            if(rx_message.StdId == 0x1B)
+            if(rx_message.StdId == 0x0601)
             {
-                Real_Current_Value[0] = (rx_message.Data[0]<<8)|(rx_message.Data[1]);
-                Real_Velocity_Value[0] = (rx_message.Data[2]<<8)|(rx_message.Data[3]);
-                Real_Position_Value[0] = ((rx_message.Data[4]<<24)|(rx_message.Data[5]<<16)|(rx_message.Data[6]<<8)|(rx_message.Data[7]));
-								robomodule[0].info.cur = Real_Current_Value[0];
-								robomodule[0].info.vel = Real_Velocity_Value[0];
-								robomodule[0].info.pos = Real_Position_Value[0];
+
+                position_value[0] = ((rx_message.Data[6]<<24)|(rx_message.Data[7]<<16)|(rx_message.Data[4]<<8)|(rx_message.Data[5]));
+								chassis.right_pulse = ((rx_message.Data[6]<<24)|(rx_message.Data[7]<<16)|(rx_message.Data[4]<<8)|(rx_message.Data[5]));
+
             }
-            else if(rx_message.StdId == 0x2B)
-            {
-                Real_Current_Value[1] = (rx_message.Data[0]<<8)|(rx_message.Data[1]);
-                Real_Velocity_Value[1] = (rx_message.Data[2]<<8)|(rx_message.Data[3]);
-                Real_Position_Value[1] = ((rx_message.Data[4]<<24)|(rx_message.Data[5]<<16)|(rx_message.Data[6]<<8)|(rx_message.Data[7]));
-								robomodule[1].info.cur = Real_Current_Value[1];
-								robomodule[1].info.vel = Real_Velocity_Value[1];
-								robomodule[1].info.pos = Real_Position_Value[1];
-            }
-            else if(rx_message.StdId == 0x3B)
-            {
-                Real_Current_Value[2] = (rx_message.Data[0]<<8)|(rx_message.Data[1]);
-                Real_Velocity_Value[2] = (rx_message.Data[2]<<8)|(rx_message.Data[3]);
-                Real_Position_Value[2] = ((rx_message.Data[4]<<24)|(rx_message.Data[5]<<16)|(rx_message.Data[6]<<8)|(rx_message.Data[7]));
-            }
-            else if(rx_message.StdId == 0x4B)
-            {
-                Real_Current_Value[3] = (rx_message.Data[0]<<8)|(rx_message.Data[1]);
-                Real_Velocity_Value[3] = (rx_message.Data[2]<<8)|(rx_message.Data[3]);
-                Real_Position_Value[3] = ((rx_message.Data[4]<<24)|(rx_message.Data[5]<<16)|(rx_message.Data[6]<<8)|(rx_message.Data[7]));
-            }
-            else if(rx_message.StdId == 0x1F)
-            {
-                Real_Online[0] = 1;
-								robomodule[0].info.online = 1;
-            }
-            else if(rx_message.StdId == 0x2F)
-            {
-                Real_Online[1] = 1;
-								robomodule[1].info.online = 1;
-            }
-            else if(rx_message.StdId == 0x3F)
-            {
-                Real_Online[2] = 1;
-            }
-            else if(rx_message.StdId == 0x4F)
-            {
-                Real_Online[3] = 1;
-            }
-            else if(rx_message.StdId == 0x1C)
-            {
-                Real_Ctl1_Value[0] = rx_message.Data[0];
-                Real_Ctl2_Value[0] = rx_message.Data[1];
-								robomodule[0].info.ctl1 = Real_Ctl1_Value[0];
-								robomodule[0].info.ctl2 = Real_Ctl2_Value[0];
-            }
-            else if(rx_message.StdId == 0x2C)
-            {
-                Real_Ctl1_Value[1] = rx_message.Data[0];
-                Real_Ctl2_Value[1] = rx_message.Data[1];
-								robomodule[1].info.ctl1 = Real_Ctl1_Value[1];
-								robomodule[1].info.ctl2 = Real_Ctl2_Value[1];
-            }
-            else if(rx_message.StdId == 0x3C)
-            {
-                Real_Ctl1_Value[2] = rx_message.Data[0];
-                Real_Ctl2_Value[2] = rx_message.Data[1];
-            }
-            else if(rx_message.StdId == 0x4C)
-            {
-                Real_Ctl1_Value[3] = rx_message.Data[0];
-                Real_Ctl2_Value[3] = rx_message.Data[1];
-            }
+						else if(rx_message.StdId == 0x0602){
+						
+								position_value[1] = ((rx_message.Data[6]<<24)|(rx_message.Data[7]<<16)|(rx_message.Data[4]<<8)|(rx_message.Data[5]));
+								chassis.left_pulse = ((rx_message.Data[6]<<24)|(rx_message.Data[7]<<16)|(rx_message.Data[4]<<8)|(rx_message.Data[5]));
+						}
 
         }
                 
     }
 }
+
+//本接收数据的函数，默认为4个驱动器，都挂在0组，编号为1、2、3、4
+/*************************************************************************
+                          CAN1_RX0_IRQHandler
+描述：CAN1的接收中断函数
+*************************************************************************/
+//void CAN1_RX0_IRQHandler(void)
+//{
+//    CanRxMsg rx_message;
+//    
+//    if (CAN_GetITStatus(CAN1,CAN_IT_FMP0)!= RESET)
+//	{
+//        CAN_ClearITPendingBit(CAN1, CAN_IT_FMP0);
+//        CAN_Receive(CAN1, CAN_FIFO0, &rx_message);
+//        
+//        if((rx_message.IDE == CAN_Id_Standard)&&(rx_message.IDE == CAN_RTR_Data)&&(rx_message.DLC == 8)) //标准帧、数据帧、数据长度为8
+//        {
+//            if(rx_message.StdId == 0x1B)
+//            {
+//                Real_Current_Value[0] = (rx_message.Data[0]<<8)|(rx_message.Data[1]);
+//                Real_Velocity_Value[0] = (rx_message.Data[2]<<8)|(rx_message.Data[3]);
+//                Real_Position_Value[0] = ((rx_message.Data[4]<<24)|(rx_message.Data[5]<<16)|(rx_message.Data[6]<<8)|(rx_message.Data[7]));
+//								robomodule[0].info.cur = Real_Current_Value[0];
+//								robomodule[0].info.vel = Real_Velocity_Value[0];
+//								robomodule[0].info.pos = Real_Position_Value[0];
+//            }
+//            else if(rx_message.StdId == 0x2B)
+//            {
+//                Real_Current_Value[1] = (rx_message.Data[0]<<8)|(rx_message.Data[1]);
+//                Real_Velocity_Value[1] = (rx_message.Data[2]<<8)|(rx_message.Data[3]);
+//                Real_Position_Value[1] = ((rx_message.Data[4]<<24)|(rx_message.Data[5]<<16)|(rx_message.Data[6]<<8)|(rx_message.Data[7]));
+//								robomodule[1].info.cur = Real_Current_Value[1];
+//								robomodule[1].info.vel = Real_Velocity_Value[1];
+//								robomodule[1].info.pos = Real_Position_Value[1];
+//            }
+//            else if(rx_message.StdId == 0x3B)
+//            {
+//                Real_Current_Value[2] = (rx_message.Data[0]<<8)|(rx_message.Data[1]);
+//                Real_Velocity_Value[2] = (rx_message.Data[2]<<8)|(rx_message.Data[3]);
+//                Real_Position_Value[2] = ((rx_message.Data[4]<<24)|(rx_message.Data[5]<<16)|(rx_message.Data[6]<<8)|(rx_message.Data[7]));
+//            }
+//            else if(rx_message.StdId == 0x4B)
+//            {
+//                Real_Current_Value[3] = (rx_message.Data[0]<<8)|(rx_message.Data[1]);
+//                Real_Velocity_Value[3] = (rx_message.Data[2]<<8)|(rx_message.Data[3]);
+//                Real_Position_Value[3] = ((rx_message.Data[4]<<24)|(rx_message.Data[5]<<16)|(rx_message.Data[6]<<8)|(rx_message.Data[7]));
+//            }
+//            else if(rx_message.StdId == 0x1F)
+//            {
+//                Real_Online[0] = 1;
+//								robomodule[0].info.online = 1;
+//            }
+//            else if(rx_message.StdId == 0x2F)
+//            {
+//                Real_Online[1] = 1;
+//								robomodule[1].info.online = 1;
+//            }
+//            else if(rx_message.StdId == 0x3F)
+//            {
+//                Real_Online[2] = 1;
+//            }
+//            else if(rx_message.StdId == 0x4F)
+//            {
+//                Real_Online[3] = 1;
+//            }
+//            else if(rx_message.StdId == 0x1C)
+//            {
+//                Real_Ctl1_Value[0] = rx_message.Data[0];
+//                Real_Ctl2_Value[0] = rx_message.Data[1];
+//								robomodule[0].info.ctl1 = Real_Ctl1_Value[0];
+//								robomodule[0].info.ctl2 = Real_Ctl2_Value[0];
+//            }
+//            else if(rx_message.StdId == 0x2C)
+//            {
+//                Real_Ctl1_Value[1] = rx_message.Data[0];
+//                Real_Ctl2_Value[1] = rx_message.Data[1];
+//								robomodule[1].info.ctl1 = Real_Ctl1_Value[1];
+//								robomodule[1].info.ctl2 = Real_Ctl2_Value[1];
+//            }
+//            else if(rx_message.StdId == 0x3C)
+//            {
+//                Real_Ctl1_Value[2] = rx_message.Data[0];
+//                Real_Ctl2_Value[2] = rx_message.Data[1];
+//            }
+//            else if(rx_message.StdId == 0x4C)
+//            {
+//                Real_Ctl1_Value[3] = rx_message.Data[0];
+//                Real_Ctl2_Value[3] = rx_message.Data[1];
+//            }
+
+//        }
+//                
+//    }
+//}
+

@@ -47,5 +47,7 @@
 ..\output\stm32f4xx_it.o: ..\User\APP\robomodule.h
 ..\output\stm32f4xx_it.o: ..\User\hardware\adc\adc.h
 ..\output\stm32f4xx_it.o: ..\User\hardware\JY901\JY901.h
+..\output\stm32f4xx_it.o: ..\User\APP\chassis.h
 ..\output\stm32f4xx_it.o: D:\keil\ARM\ARMCC\Bin\..\include\string.h
 ..\output\stm32f4xx_it.o: D:\keil\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\stm32f4xx_it.o: ..\User\APP\ultrasonic.h

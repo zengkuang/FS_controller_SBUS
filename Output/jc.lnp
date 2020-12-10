@@ -54,6 +54,8 @@
 "..\output\jy901.o"
 "..\output\sbus.o"
 "..\output\robomodule.o"
+"..\output\chassis.o"
+"..\output\ultrasonic.o"
 --strict --scatter "..\Output\jc.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

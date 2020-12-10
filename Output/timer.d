@@ -47,5 +47,7 @@
 ..\output\timer.o: ..\User\APP\robomodule.h
 ..\output\timer.o: ..\User\hardware\adc\adc.h
 ..\output\timer.o: ..\User\hardware\JY901\JY901.h
+..\output\timer.o: ..\User\APP\chassis.h
 ..\output\timer.o: D:\keil\ARM\ARMCC\Bin\..\include\string.h
 ..\output\timer.o: D:\keil\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\timer.o: ..\User\APP\ultrasonic.h

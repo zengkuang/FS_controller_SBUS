@@ -41,8 +41,10 @@
 #include "robomodule.h"
 #include "adc.h"
 #include "JY901.h"
+#include "chassis.h"
 #include "string.h"
 #include "stdio.h"
+#include "ultrasonic.h"
 
 
 typedef signed char int8_t;

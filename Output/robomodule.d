@@ -47,5 +47,7 @@
 ..\output\robomodule.o: ..\User\APP\robomodule.h
 ..\output\robomodule.o: ..\User\hardware\adc\adc.h
 ..\output\robomodule.o: ..\User\hardware\JY901\JY901.h
+..\output\robomodule.o: ..\User\APP\chassis.h
 ..\output\robomodule.o: D:\keil\ARM\ARMCC\Bin\..\include\string.h
 ..\output\robomodule.o: D:\keil\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\robomodule.o: ..\User\APP\ultrasonic.h

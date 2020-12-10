@@ -4,6 +4,7 @@ struct STime		stcTime;
 struct SAcc 		stcAcc;
 struct SGyro 		stcGyro;
 struct SAngle 	stcAngle;
+struct SAngle		realAngle;
 struct SMag 		stcMag;
 struct SDStatus stcDStatus;
 struct SPress 	stcPress;
@@ -91,6 +92,11 @@ void CopeSerial2Data(unsigned char ucData)
 		}
 		ucRxCnt=0;//Çå¿Õ»º´æÇø
 	}
+	
+	angle_cal();
+	chassis.update += 1;
+	
+	
 }
 
 void USART2_IRQHandler(void)
@@ -117,6 +123,13 @@ void USART2_IRQHandler(void)
 	USART_ClearITPendingBit(USART2,USART_IT_ORE);
 }
 
+void angle_cal(void){	
+	chassis.yaw = stcAngle.Angle[2]/32768.0*180;
+	chassis.pitch = stcAngle.Angle[0]/32768.0*180;
+	chassis.roll = stcAngle.Angle[1]/32768.0*180;
+	chassis.yaw_d[chassis.update % 10] = chassis.yaw;
+	
+}
 
 
 

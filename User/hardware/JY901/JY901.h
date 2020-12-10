@@ -137,6 +137,7 @@ struct SQ
 };
  
 void JY901_usart2_Init(uint16_t baudrate);
+void angle_cal(void );
 
-
+extern struct SAngle realAngle;
 #endif
