@@ -1,1 +1,2 @@
-# FS_controller_SBUS
+# JC_TECH
+This is the beginning repository of our robot.
